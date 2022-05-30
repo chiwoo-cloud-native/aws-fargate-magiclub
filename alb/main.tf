@@ -1,15 +1,15 @@
 locals {
-  name_prefix = "magiclub-an2p"
+  alb_name = format("%s-pub-alb", var.name_prefix)
 }
 
 module "alb" {
   source = "registry.terraform.io/terraform-aws-modules/alb/aws"
 
-  name               = format("%s-alb", local.name_prefix)
+  name               = local.alb_name
   load_balancer_type = "application"
   vpc_id             = data.aws_vpc.this.id
   security_groups    = [aws_security_group.this.id]
-  subnets            = data.aws_subnet_ids.apps.ids
+  subnets            = data.aws_subnets.pub.ids
 
   http_tcp_listeners = [
     {
@@ -39,23 +39,8 @@ module "alb" {
     },
   ]
 
-  tags = {
-    Owner       = "opsmaster@your.company.com"
-    Environment = "PoC"
-    Team        = "DevOps"
-  }
-
-  lb_tags = {
-    MyLoadBalancer = "foo"
-  }
-
-  http_tcp_listeners_tags = {
-    MyLoadBalancerTCPListener = "bar"
-  }
-
-  https_listeners_tags = {
-    MyLoadBalancerHTTPSListener = "bar"
-  }
-
+  tags = merge(var.tags, {
+    Name = local.alb_name
+  })
 
 }
