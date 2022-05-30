@@ -1,6 +1,5 @@
 locals {
-  service_name      = format("%s-%s", var.name_prefix, var.container_name)
-  service_discovery = format("%s-%s", var.project, var.container_name)
+  service_name      = format("%s-ecs-%s", var.name_prefix, var.container_name)
   cwlog_grp_name    = format("/ecs/%s", local.service_name)
   enable_load_balancer = var.enable_load_balancer && var.target_group_arn != null && var.container_port > 0 ? true : false
 
@@ -39,7 +38,7 @@ locals {
 }
 
 resource "aws_ecs_task_definition" "this" {
-  family                   = format("%s-ecs-td", local.service_name)
+  family                   = format("%s-td", local.service_name)
   requires_compatibilities = var.requires_compatibilities
   network_mode             = "awsvpc"
 

@@ -1,5 +1,5 @@
 resource "aws_service_discovery_service" "this" {
-  name = "map"
+  name = var.container_name
 
   dns_config {
     namespace_id   = var.cloud_map_namespace_id
