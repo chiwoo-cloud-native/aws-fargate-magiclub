@@ -22,8 +22,7 @@ provider "aws" {
 data "aws_ecr_authorization_token" "ecr" {}
 
 provider "docker" {
-  # host = "unix:///var/run/docker.sock"
-  host = "unix:///${pathexpand("~/.lima/default/sock/docker.sock")}"
+  host = "unix:///var/run/docker.sock"
 
   registry_auth {
     address  = local.ecr_repository_url

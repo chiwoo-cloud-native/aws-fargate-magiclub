@@ -24,10 +24,10 @@ aws-fargate 클러스터를 구성하고 애플리케이션을 배포 합니다.
 ## Build
 
 ```
-terraform -chdir=vpc init && terraform -chdir=vpc apply -auto-approve && \
-terraform -chdir=alb init && terraform -chdir=alb apply -auto-approve && \
-terraform -chdir=fargate init && terraform -chdir=fargate apply -auto-approve && \
-terraform -chdir=services/lotto init && terraform -chdir=services/lotto apply -auto-approve
+terraform -chdir=vpc init && terraform -chdir=alb init && \
+terraform -chdir=fargate init  && terraform -chdir=services/lotto \
+terraform -chdir=vpc apply -auto-approve && terraform -chdir=alb apply -auto-approve && \
+terraform -chdir=fargate apply -auto-approve  init && terraform -chdir=services/lotto apply -auto-approve
 ```
 
 ## Check
@@ -54,4 +54,43 @@ terraform -chdir=services/lotto init && terraform -chdir=services/lotto destroy 
 terraform -chdir=fargate init && terraform -chdir=fargate destroy -auto-approve && \
 terraform -chdir=alb init && terraform -chdir=alb destroy -auto-approve && \
 terraform -chdir=vpc init && terraform -chdir=vpc destroy -auto-approve
+```
+
+
+## Appendix
+
+### Docker 호스트 확인
+애플리케이션 컨테이너 이미지 빌드를 위해 도커 이미지를 빌드 할 수 있는 [Docker Terraform 프로바이더](https://registry.terraform.io/providers/kreuzwerker/docker/latest) 를 추가 하였습니다.
+
+- [providers.tf](./services/lotto/providers.tf)
+
+```
+terraform {
+  required_providers {
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = "= 2.16.0"
+    }
+  }
+}
+
+provider "docker" {
+  host = "unix:///var/run/docker.sock"
+}
+```
+
+위의 설정 파일에서 docker host 는 사용자마다 다를 수 있습니다.
+먼저 docker 데몬이 구동 되어 있어야 하며, docker context ls 를 통해 현재 docker 앤드포인트가 무엇인지 DOCKER ENDPOINT 값을 확인하세요.  
+그리고 provider "docker" 리소스의 host 속성 값을, 현재 사용중인 ENDPOINT 로 설정 합니다. 
+
+```
+docker context ls
+
+NAME        DESCRIPTION                               DOCKER ENDPOINT                        KUBERNETES ENDPOINT   ORCHESTRATOR
+default *   Current DOCKER_HOST based configuration   unix:///var/run/docker.sock                                  swarm
+```
+
+DOCKER_HOST 환경 변수를 설정하면 docker CLI 로 액세스할 docker 컨텍스트를 지정 할 수 있습니다.
+```
+export DOCKER_HOST="unix:///var/run/docker.sock" 
 ```
