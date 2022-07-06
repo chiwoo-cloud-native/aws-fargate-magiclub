@@ -1,5 +1,6 @@
 # aws-fargate-magiclub
-aws-fargate 클러스터를 구성하고 애플리케이션을 배포 합니다.
+
+이 프로젝트는 Terraform 모듈을 사용하여 AWS ECS 서비스 및 여기에 관련된 AWS 리소스들과 샘플 애플리케이션 서비스를 한 번에 프로비저닝하는 데모 입니다.  
 
 ## Architecture
 ![](aws-arch-ecs-fargate-01.png)
@@ -17,7 +18,9 @@ aws-fargate 클러스터를 구성하고 애플리케이션을 배포 합니다.
 - Cloud Map: 컨테이너 애플리케이션을 위한 디스커버리 서비스로 Route 53 의 호스팅 정보가 사전에 구성되어 있어야 합니다.
 
 ## Pre-requisite
-AWS ECS Fargate 서비스를 프로비저닝 하기 위해 다음의 Tool 들을 설치하고 Domain 서비스를 사전에 구성이 되어 있어야 합니다.
+AWS ECS Fargate 서비스를 프로비저닝 하기 위해 다음의 Tool 들을 설치 해야 합니다.  
+특히, Domain 서비스를 사전에 구성 되어 있어야 하며, Docker 이미지를 빌드 할 수 있도록 Docker Daemon 이 구동되어 있어야 합니다. 
+
 - [Terraform 설치](https://learn.hashicorp.com/tutorials/terraform/install-cli)
 - [AWS CLI 설치](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/getting-started-install.html)
 - [AWS Profile 구성](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-configure-files.html)
@@ -34,6 +37,8 @@ sh deploy.sh
 ```
 
 ## Check
+
+프로비저닝이 완료 되면 cURL 명령을 통해 샘플 애플리케이션(lotto) 이 실제로 동작하는지 확인 할 수 있습니다. 
 
 ### cURL 서비스 Health 체크 
 도메인을 `sympledemo.tk` 으로 설정 하였다면 `https://lotto.sympledemo.tk` 으로 서비스 앤드포인트로 액세스 할 수 있습니다.
