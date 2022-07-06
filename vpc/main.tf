@@ -1,7 +1,12 @@
 locals {
-  name_prefix = "magiclub-an2p"
+  name_prefix = "${var.project}-${var.region}${var.env}"
+  tags        = {
+    Project     = var.project
+    Environment = var.environment
+    Owner       = var.owner
+    Team        = var.team
+  }
 }
-
 
 module "vpc" {
   source = "registry.terraform.io/terraform-aws-modules/vpc/aws"
@@ -21,11 +26,7 @@ module "vpc" {
   enable_nat_gateway   = true
   single_nat_gateway   = true
 
-  tags = {
-    Owner       = "opsmaster@your.company.com"
-    Environment = "PoC"
-    Team        = "DevOps"
-  }
+  tags = local.tags
 
   vpc_tags         = { Name = format("%s-vpc", local.name_prefix) }
   igw_tags         = { Name = format("%s-igw", local.name_prefix) }

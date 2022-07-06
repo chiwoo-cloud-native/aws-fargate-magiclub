@@ -1,5 +1,5 @@
 locals {
-  sg_name = format("%s-%s-sg", var.name_prefix, var.container_name)
+  sg_name = format("%s-%s-sg", local.name_prefix, var.container_name)
 }
 
 resource "aws_security_group" "container_sg" {
@@ -17,7 +17,7 @@ resource "aws_security_group" "container_sg" {
   }
   */
 
-  tags = merge(var.tags, {
+  tags = merge(local.tags, {
     Name = local.sg_name
   })
 

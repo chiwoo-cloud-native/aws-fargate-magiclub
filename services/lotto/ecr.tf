@@ -1,5 +1,5 @@
 locals {
-  ecr_name = format("%s-%s-ecr", var.name_prefix, var.container_name)
+  ecr_name = format("%s-%s-ecr", local.name_prefix, var.container_name)
 }
 
 resource "aws_ecr_repository" "this" {
@@ -10,7 +10,7 @@ resource "aws_ecr_repository" "this" {
     scan_on_push = false
   }
 
-  tags = merge(var.tags, {
+  tags = merge(local.tags, {
     Name = local.ecr_name
   })
 }

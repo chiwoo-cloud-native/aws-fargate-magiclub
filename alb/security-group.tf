@@ -1,5 +1,5 @@
 locals {
-  sg_name = format("%s-pub-alb-sg", var.name_prefix)
+  sg_name = format("%s-pub-alb-sg", local.name_prefix)
 }
 resource "aws_security_group" "this" {
   name        = local.sg_name
@@ -15,7 +15,7 @@ resource "aws_security_group" "this" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = merge(var.tags, {
+  tags = merge(local.tags, {
     Name = local.sg_name
   })
 }

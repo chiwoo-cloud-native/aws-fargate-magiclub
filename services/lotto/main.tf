@@ -1,6 +1,13 @@
 locals {
+  name_prefix = "${var.project}-${var.region}${var.env}"
   region             = data.aws_region.current.name
   ecr_repository_url = format("%s", aws_ecr_repository.this.repository_url)
+  tags        = {
+    Project     = var.project
+    Environment = var.environment
+    Owner       = var.owner
+    Team        = var.team
+  }
 }
 
 module "lotto" {
@@ -8,7 +15,7 @@ module "lotto" {
 
   project         = var.project
   region          = local.region
-  name_prefix     = var.name_prefix
+  name_prefix     = local.name_prefix
   container_name  = var.container_name
   container_port  = var.container_port
   container_image = local.ecr_repository_url
@@ -18,7 +25,7 @@ module "lotto" {
   port_mappings   = [
     {
       "protocol" : "tcp",
-      "containerPort" : 8080
+      "containerPort" : var.container_port
     },
   ]
 

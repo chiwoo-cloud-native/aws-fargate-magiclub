@@ -4,7 +4,7 @@ data "aws_region" "current" {}
 data "aws_vpc" "this" {
   default = false
   tags    = {
-    Name = format("%s-vpc", var.name_prefix)
+    Name = format("%s-vpc", local.name_prefix)
   }
 }
 

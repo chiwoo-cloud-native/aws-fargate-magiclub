@@ -1,5 +1,12 @@
 locals {
-  alb_name = format("%s-pub-alb", var.name_prefix)
+  name_prefix = "${var.project}-${var.region}${var.env}"
+  alb_name = format("%s-pub-alb", local.name_prefix)
+  tags        = {
+    Project     = var.project
+    Environment = var.environment
+    Owner       = var.owner
+    Team        = var.team
+  }
 }
 
 module "alb" {
@@ -39,7 +46,7 @@ module "alb" {
     },
   ]
 
-  tags = merge(var.tags, {
+  tags = merge(local.tags, {
     Name = local.alb_name
   })
 

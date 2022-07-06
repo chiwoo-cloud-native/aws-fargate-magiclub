@@ -3,7 +3,7 @@ locals {
 }
 
 resource "aws_lb_target_group" "tg8080" {
-  name        = format("%s-%s-tg80", var.project, var.container_name)
+  name        = format("%s-%s-tg8080", var.project, var.container_name)
   port        = var.container_port
   protocol    = "HTTP"
   target_type = "ip"

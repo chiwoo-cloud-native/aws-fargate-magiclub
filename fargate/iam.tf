@@ -25,7 +25,7 @@ resource "aws_iam_role" "ecs_task_ssm" {
   name               = local.iam_ecs_task_ssm_role
   description        = "Use Amazon ECS Exec for debugging."
   assume_role_policy = data.aws_iam_policy_document.ecs_task_exec_assume.json
-  tags               = merge(var.tags, { Name = local.iam_ecs_task_ssm_role, })
+  tags               = merge(local.tags, { Name = local.iam_ecs_task_ssm_role, })
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_task_ssm" {
@@ -42,7 +42,7 @@ resource "aws_iam_role" "ecs_task_exec" {
   name               = local.iam_ecs_task_exec_role
   description        = "ECS Task Execution Role"
   assume_role_policy = data.aws_iam_policy_document.ecs_task_exec_assume.json
-  tags               = merge(var.tags, { Name = local.iam_ecs_task_exec_role, })
+  tags               = merge(local.tags, { Name = local.iam_ecs_task_exec_role, })
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_exec_default" {
@@ -73,7 +73,7 @@ resource "aws_iam_policy" "ecs_task_exec" {
   name   = format("%sECSTaskExecutionPolicy", var.project)
   policy = data.aws_iam_policy_document.ecs_task_exec.json
 
-  tags = merge(var.tags, { Name = format("%sECSTaskExecutionPolicy", var.project) })
+  tags = merge(local.tags, { Name = format("%sECSTaskExecutionPolicy", var.project) })
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_task_exec" {
