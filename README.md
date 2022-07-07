@@ -128,17 +128,17 @@ aws-fargate-magiclub 프로비저닝을 위한 Terraform 주요 정보를 참고
 
 ### Requirements
 
-| Name      | Version   |
-|-----------|-----------|
-| terraform | > = 1.0.0  |
-| aws       | > = 3.75.1 |
-| docker    | > = 20.10.1  |
+| Name      | Version     |
+|-----------|-------------|
+| terraform | >= 1.0.0    |
+| aws       | >= 3.75.1   |
+| docker    | >= 20.10.1  |
 
 ### Providers
 
 | Name               | Version   |
 |--------------------|-----------|
-| hashicorp/aws      | > = 3.75.1 |
+| hashicorp/aws      | >= 3.75.1 |
 | kreuzwerker/docker | = 2.16.0  |
 
 ### Modules
