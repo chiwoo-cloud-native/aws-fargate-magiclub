@@ -42,6 +42,10 @@ AWS ECS Fargate 서비스를 프로비저닝 하기 위해 다음의 Tool 들을
 아래 명령을 통해 ECS Fargate 관련 클라우드 리소스 뿐만 아니라 샘플 애플리케이션이 한번에 프로비저닝 됩니다.
 
 ```
+git clone https://github.com/chiwoo-cloud-native/aws-fargate-magiclub.git
+
+cd aws-fargate-magiclub
+
 sh deploy.sh
 ```
 
