@@ -37,23 +37,28 @@ AWS ECS Fargate 서비스를 프로비저닝 하기 위해 다음의 Tool 들을
   가이드 참고
 - [AWS Route53 도메인 서비스 관리](https://symplesims.github.io/devops/route53/acm/hosting/2022/04/09/aws-route53.html) 가이드 참고
 
-## Build
+## Git
 
-아래 명령을 통해 ECS Fargate 관련 클라우드 리소스 뿐만 아니라 샘플 애플리케이션이 한번에 프로비저닝 됩니다.
-
+`aws-fargate-magiclub` 프로젝트를 내려 받습니다. 
 ```
 git clone https://github.com/chiwoo-cloud-native/aws-fargate-magiclub.git
+```
 
+## Build
+
+`aws-fargate-magiclub` 프로젝트 경로에서 `sh deploy.sh` 명령을 통해 AWS 클라우드 리소스 및 ECS Service(애플리케이션)가 한번에 프로비저닝 됩니다.
+
+```
 cd aws-fargate-magiclub
 
 sh deploy.sh
 ```
 
-## Check
+## Check Service
 
 프로비저닝이 완료 되면 cURL 명령을 통해 샘플 애플리케이션(lotto) 이 실제로 동작하는지 확인 할 수 있습니다.
 
-### cURL 서비스 Health 체크
+### Check Application Health 
 
 도메인을 `sympledemo.tk` 으로 설정 하였다면 `https://lotto.sympledemo.tk` 으로 서비스 앤드포인트로 액세스 할 수 있습니다.
 
@@ -61,7 +66,7 @@ sh deploy.sh
 curl --location -X GET 'https://lotto.sympledemo.tk/health'
 ```
 
-### cURL 서비스 로또 번호 추천
+### Check Application Feature 
 
 ```
 curl --location -X GET 'https://lotto.sympledemo.tk/api/lotto/lucky' -H 'Content-Type: application/json'
