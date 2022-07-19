@@ -7,3 +7,4 @@ variable "owner" { type = string }
 variable "team" { type = string }
 variable "container_name" { type = string }
 variable "container_port" { type = number }
+variable "kms_alias" { type = string }
