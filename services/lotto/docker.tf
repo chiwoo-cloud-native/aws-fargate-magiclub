@@ -3,7 +3,7 @@ resource "docker_image" "this" {
   build {
     path       = "./docker"
     dockerfile = "Dockerfile"
-    tag        = ["latest"]
+    tag        = ["${local.ecr_repository_url}:latest"]
     build_arg  = {
       key1 : "value1"
     }
@@ -15,7 +15,7 @@ resource "docker_image" "this" {
 
 resource "null_resource" "push" {
   provisioner "local-exec" {
-    command     = "${path.module}/docker/publish.sh ${local.ecr_repository_url} latest"
+    command     = "sh ${path.module}/docker/publish.sh ${local.ecr_repository_url} latest"
     interpreter = ["bash", "-c"]
   }
 }
