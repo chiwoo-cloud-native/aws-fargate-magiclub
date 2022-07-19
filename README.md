@@ -32,7 +32,30 @@ AWS ECS Fargate 서비스를 프로비저닝 하기 위해 다음의 Tool 들을
 - [Docker 설치](https://docs.docker.com/desktop/mac/install/)
 - [AWS KMS 비대칭키 생성](https://docs.aws.amazon.com/ko_kr/kms/latest/developerguide/asymm-create-key.html)
 
-참고로 다음 블로그를 참고 하면 로컬 개발 환경 및 Domain 서비스 가입을 편리하게 할 수 있습니다.
+### AWS CLI 를 통한 사전 구성 서비스 확인 
+```
+# domain 변수 값에 해당하는 public hosted-zone 이 구성되어 있는지 확인 합니다.  
+aws route53 list-hosted-zones
+
+# domain 변수 값에 해당하는 ACM 인증서가 발급되어 있는지 확인 합니다.
+aws acm list-certificates 
+
+# kms 별칭에 해당하는 사용자 KMS 암호화 키가 구성되어 있는지 확인 합니다.
+aws kms list-aliases
+```
+
+### AWSServiceRoleForECS 서비스 연결 역할 
+만약 최초로 ECS 클러스터를 구성 하는 것이라면, [AWSServiceRoleForECS](https://docs.aws.amazon.com/ko_kr/AmazonECS/latest/developerguide/using-service-linked-roles.html) 를 생성해야 합니다.  
+
+ECS 클러스터는 내부적으로 서비스 실행 및 리소스를 관리 하기위한 API 액세스가 필요하며 해당 권한을 서비스 연결 역할로 `AWSServiceRoleForECS` 을 사용 합니다.  
+
+ECS 클러스터를 위한 IAM 서비스 연결 역할은 AWS CLI 를 통해 생성할 수 있습니다. 
+```
+aws iam create-service-linked-role --aws-service-name ecs.amazonaws.com
+```
+
+### 도메인 서비스 가입 참고 
+다음 블로그를 참고 하면 로컬 개발 환경 및 Domain 서비스 가입을 편리하게 할 수 있습니다.
 
 - [Mac OS 개발자를 위한 로컬 개발 환경 구성](https://symplesims.github.io/development/setup/macos/2021/12/02/setup-development-environment-on-macos.html)
   가이드 참고
