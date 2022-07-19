@@ -1,9 +1,9 @@
 resource "docker_image" "this" {
-  name = "zoo"
+  name = local.ecr_repository_url
   build {
     path       = "./docker"
     dockerfile = "Dockerfile"
-    tag        = ["${local.ecr_repository_url}:latest"]
+    tag        = ["latest"]
     build_arg  = {
       key1 : "value1"
     }

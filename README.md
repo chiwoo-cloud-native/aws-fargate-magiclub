@@ -45,12 +45,14 @@ aws kms list-aliases
 ```
 
 ### AWSServiceRoleForECS 서비스 연결 역할 
-만약 최초로 ECS 클러스터를 구성 하는 것이라면, [AWSServiceRoleForECS](https://docs.aws.amazon.com/ko_kr/AmazonECS/latest/developerguide/using-service-linked-roles.html) 를 생성해야 합니다.  
-
-ECS 클러스터는 내부적으로 서비스 실행 및 리소스를 관리 하기위한 API 액세스가 필요하며 해당 권한을 서비스 연결 역할로 `AWSServiceRoleForECS` 을 사용 합니다.  
+만약 최초로 ECS 클러스터를 구성 하는 것이라면, [Amazon ECS 용 서비스 연결 역할](https://docs.aws.amazon.com/ko_kr/AmazonECS/latest/developerguide/using-service-linked-roles.html) 을 생성해야 합니다.    
+ECS 클러스터는 내부적으로 서비스 실행 및 리소스 관리를 위한 API 를 액세스 하기 위해서 ECS 서비스 연결 역할을 필요로 합니다.  
 
 ECS 클러스터를 위한 IAM 서비스 연결 역할은 AWS CLI 를 통해 생성할 수 있습니다. 
 ```
+# 
+
+#
 aws iam create-service-linked-role --aws-service-name ecs.amazonaws.com
 ```
 
