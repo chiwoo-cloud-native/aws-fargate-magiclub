@@ -24,12 +24,13 @@ AWS 클라우드를 활용하여 고객이 필요로 하는 애플리케이션 �
 ## Pre-requisite
 
 AWS ECS Fargate 서비스를 프로비저닝 하기 위해 다음의 Tool 들을 설치 해야 합니다.  
-특히, Domain 서비스를 사전에 구성 되어 있어야 하며, Docker 이미지를 빌드 할 수 있도록 Docker Daemon 이 구동되어 있어야 합니다.
+특히, Domain 서비스와 KMS 비대칭키를 사전에 구성 되어 있어야 하며, Docker 이미지를 빌드 할 수 있도록 Docker Daemon 이 구동되어 있어야 합니다.
 
 - [Terraform 설치](https://learn.hashicorp.com/tutorials/terraform/install-cli)
 - [AWS CLI 설치](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/getting-started-install.html)
 - [AWS Profile 구성](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-configure-files.html)
 - [Docker 설치](https://docs.docker.com/desktop/mac/install/)
+- [AWS KMS 비대칭키 생성](https://docs.aws.amazon.com/ko_kr/kms/latest/developerguide/asymm-create-key.html)
 
 참고로 다음 블로그를 참고 하면 로컬 개발 환경 및 Domain 서비스 가입을 편리하게 할 수 있습니다.
 

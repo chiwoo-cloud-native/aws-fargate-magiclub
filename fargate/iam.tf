@@ -7,8 +7,26 @@ locals {
 
 # ECS SSM Command Role
 
-data "aws_iam_policy" "execute_command" {
-  name = "AmazonECSCommandExecutionPolicy"
+
+data "aws_iam_policy_document" "ssm" {
+
+  # SSM
+  statement {
+    sid     = ""
+    actions = [
+      "ssmmessages:CreateControlChannel",
+      "ssmmessages:CreateDataChannel",
+      "ssmmessages:OpenControlChannel",
+      "ssmmessages:OpenDataChannel"
+    ]
+    resources = [ "*" ]
+  }
+
+}
+
+resource "aws_iam_policy" "execute_command" {
+  name   = format("%sECSCommandExecutionPolicy", var.project)
+  policy = data.aws_iam_policy_document.ssm.json
 }
 
 data "aws_iam_policy_document" "ecs_task_exec_assume" {
@@ -30,7 +48,7 @@ resource "aws_iam_role" "ecs_task_ssm" {
 
 resource "aws_iam_role_policy_attachment" "ecs_task_ssm" {
   role       = aws_iam_role.ecs_task_ssm.name
-  policy_arn = data.aws_iam_policy.execute_command.arn
+  policy_arn = aws_iam_policy.execute_command.arn
 }
 
 # ECS Execution Role

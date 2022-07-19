@@ -1,6 +1,6 @@
 locals {
-  service_name      = format("%s-ecs-%s", var.name_prefix, var.container_name)
-  cwlog_grp_name    = format("/ecs/%s", local.service_name)
+  service_name         = var.container_name
+  cwlog_grp_name       = format("/ecs/%s", local.service_name)
   enable_load_balancer = var.enable_load_balancer && var.target_group_arn != null && var.container_port > 0 ? true : false
 
   logConfiguration = var.enable_cloudwatch_log_group ? length(keys(var.logConfiguration.options)) > 0 ? var.logConfiguration : {
@@ -42,14 +42,14 @@ resource "aws_ecs_task_definition" "this" {
   requires_compatibilities = var.requires_compatibilities
   network_mode             = "awsvpc"
 
-  task_role_arn            = var.task_role_arn
-  execution_role_arn       = var.execution_role_arn
+  task_role_arn      = var.task_role_arn
+  execution_role_arn = var.execution_role_arn
 
-  cpu                      = var.cpu
-  memory                   = var.memory
-  container_definitions    =  "[${jsonencode(local.container_definition)}]"
+  cpu                   = var.cpu
+  memory                = var.memory
+  container_definitions = "[${jsonencode(local.container_definition)}]"
 
-  tags = merge(var.tags, var.tags)
+  tags = merge(var.tags, { Name = local.service_name })
 }
 
 resource "aws_ecs_service" "this" {
@@ -96,6 +96,3 @@ resource "aws_ecs_service" "this" {
 
   depends_on = [aws_ecs_task_definition.this]
 }
-
-
-

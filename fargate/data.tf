@@ -9,5 +9,5 @@ data "aws_vpc" "this" {
 }
 
 data "aws_kms_key" "this" {
-  key_id = "alias/KMS-COST-DEV-MAIN"
+  key_id = "alias/${var.kms_alias}"
 }
