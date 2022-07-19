@@ -1,5 +1,5 @@
 resource "docker_image" "this" {
-  name = local.ecr_repository_url
+  name = "lotto"
   build {
     path       = "./docker"
     dockerfile = "Dockerfile"
@@ -14,8 +14,14 @@ resource "docker_image" "this" {
 }
 
 resource "null_resource" "push" {
+
   provisioner "local-exec" {
-    command     = "sh ${path.module}/docker/publish.sh ${local.ecr_repository_url} latest"
+    command     = <<EOF
+sleep 3s
+sh ${path.module}/docker/publish.sh ${local.ecr_repository_url} latest
+EOF
     interpreter = ["bash", "-c"]
   }
+
+  depends_on = [docker_image.this]
 }
