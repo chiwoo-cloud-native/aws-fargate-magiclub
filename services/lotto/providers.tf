@@ -15,8 +15,8 @@ terraform {
 }
 
 provider "aws" {
+  profile = "terra"
   region  = "ap-northeast-2"
-  profile = "active-stack"
 }
 
 data "aws_ecr_authorization_token" "ecr" {}
