@@ -10,6 +10,8 @@ resource "aws_ecr_repository" "this" {
     scan_on_push = false
   }
 
+  force_delete = true
+
   tags = merge(local.tags, {
     Name = local.ecr_name
   })
