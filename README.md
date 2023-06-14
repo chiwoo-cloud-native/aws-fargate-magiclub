@@ -26,22 +26,105 @@ AWS 클라우드를 활용하여 고객이 필요로 하는 애플리케이션 �
 AWS ECS Fargate 서비스를 프로비저닝 하기 위해 다음의 Tool 들을 설치 해야 합니다.  
 특히, Domain 서비스와 KMS 비대칭키를 사전에 구성 되어 있어야 하며, Docker 이미지를 빌드 할 수 있도록 Docker Daemon 이 구동되어 있어야 합니다.
 
+### Bastion
+Bastion 을 통해 EC2 인스턴스에 접속하여 작업을 수행 할 수 있습니다. 특히 SSM 에이전트가 구성되어 있다면 보다 안전하게 접속 할 수 있습니다.
+
+```shell
+aws ssm start-session --target INSTANCE_ID --profile symple
+```
+
+
 - [Terraform 설치](https://learn.hashicorp.com/tutorials/terraform/install-cli)
-- [AWS CLI 설치](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/getting-started-install.html)
+
+```
+# root 사용자 전환 
+sudo su - 
+
+# tfswitch 설치
+curl -L https://raw.githubusercontent.com/warrensbox/terraform-switcher/release/install.sh | bash
+
+# ec2-user 로 전환
+su - ec2-user
+
+# tfswitch 를 통한 terraform v1.3.9 버전 설치
+tfswitch
+
+# terraform version 확인
+terraform -version
+```
+
+- [SDKMAN 패키지 매니저 설치](https://sdkman.io/install)
+```
+curl -s "https://get.sdkman.io" | bash
+
+# ec2-user 인 경우 
+source "/home/ec2-user/.sdkman/bin/sdkman-init.sh"
+
+# java 17 설치 
+sdk install java 17.0.7-amzn
+
+# version 확인
+java -version
+
+# maven 빌드툴 설치 
+sdk install maven 3.9.0
+```
+
+ 
 - [AWS Profile 구성](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-configure-files.html)
+
+```
+aws configure --profile symple
+
+AWS Access Key ID [None]: ABCDEFGQQQQQQQ
+AWS Secret Access Key [None]: ************
+Default region name [None]: ap-northeast-2
+Default output format [None]:
+
+aws configure --profile symple --region ap-northeast-2
+```
+
+- [jq 설치](https://stedolan.github.io/jq/download/)
+```
+cd ~/bin
+wget -O jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
+chmod +x ./jq
+```
+
+- [mfa.sh](./shell/mfa.sh) 쉘 파일을 통한 MFA 인증 
+```shell
+./mfa.sh symple
+```
+
 - [Docker 설치](https://docs.docker.com/desktop/mac/install/)
+```
+# docker 설치 
+sudo yum install -y docker
+
+# docker 데몬 확인 
+sudo systemctl status docker
+
+# docker 데몬 구동 
+sudo systemctl start docker
+
+
+sudo usermod -aG docker ec2-user
+newgrp docker
+```
+
+- [AWS CLI 설치](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/getting-started-install.html)
 - [AWS KMS 비대칭키 생성](https://docs.aws.amazon.com/ko_kr/kms/latest/developerguide/asymm-create-key.html)
 
 ### AWS CLI 를 통한 사전 구성 서비스 확인 
 ```
 # domain 변수 값에 해당하는 public hosted-zone 이 구성되어 있는지 확인 합니다.  
-aws route53 list-hosted-zones
+aws route53 list-hosted-zones --profile terra
 
 # domain 변수 값에 해당하는 ACM 인증서가 발급되어 있는지 확인 합니다.
-aws acm list-certificates 
+aws acm list-certificates --profile terra
 
 # kms 별칭에 해당하는 사용자 KMS 암호화 키가 구성되어 있는지 확인 합니다.
-aws kms list-aliases
+aws kms list-aliases --profile terra
 ```
 
 ### AWSServiceRoleForECS 서비스 연결 역할 
@@ -50,10 +133,7 @@ ECS 클러스터는 내부적으로 서비스 실행 및 리소스 관리를 위
 
 ECS 클러스터를 위한 IAM 서비스 연결 역할은 AWS CLI 를 통해 생성할 수 있습니다. 
 ```
-# 
-
-#
-aws iam create-service-linked-role --aws-service-name ecs.amazonaws.com
+aws iam create-service-linked-role --aws-service-name ecs.amazonaws.com --profile terra
 ```
 
 ### 도메인 서비스 가입 참고 
