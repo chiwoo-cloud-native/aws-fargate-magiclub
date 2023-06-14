@@ -58,7 +58,7 @@ data "aws_alb" "pub" {
 #
 data "aws_alb_listener" "pub_http" {
   load_balancer_arn = data.aws_alb.pub.arn
-  port              = 443
+  port              = 80
 }
 
 
