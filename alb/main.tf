@@ -11,6 +11,7 @@ locals {
 
 module "alb" {
   source = "registry.terraform.io/terraform-aws-modules/alb/aws"
+  version = "8.5.0"
 
   name               = local.alb_name
   load_balancer_type = "application"

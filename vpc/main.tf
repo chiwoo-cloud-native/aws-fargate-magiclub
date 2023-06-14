@@ -10,6 +10,7 @@ locals {
 
 module "vpc" {
   source = "registry.terraform.io/terraform-aws-modules/vpc/aws"
+  version = "4.0.2"
 
   name = local.name_prefix
   cidr = "172.76.0.0/16"
