@@ -6,6 +6,7 @@ data "aws_route53_zone" "public" {
 
 data "aws_acm_certificate" "this" {
   domain = var.domain
+  statuses = ["ISSUED", "PENDING_VALIDATION", "INACTIVE"]
 }
 
 data "aws_vpc" "this" {
