@@ -18,7 +18,7 @@ resource "aws_lb_target_group" "tg8080" {
   }
 }
 
-resource "aws_lb_listener_rule" "host_based_weighted_routing" {
+resource "aws_lb_listener_rule" "rule" {
   listener_arn = data.aws_alb_listener.pub_http.arn
   priority     = 1
 
@@ -28,10 +28,16 @@ resource "aws_lb_listener_rule" "host_based_weighted_routing" {
   }
 
   condition {
-    host_header {
-      values = [ local.hostname ]
+    path_pattern {
+      values = ["/v1/*"]
     }
   }
+
+#  condition {
+#    host_header {
+#      values = [ local.hostname ]
+#    }
+#  }
 
 }
 

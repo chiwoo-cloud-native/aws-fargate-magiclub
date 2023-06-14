@@ -155,7 +155,11 @@ git clone https://github.com/chiwoo-cloud-native/aws-fargate-magiclub.git
 `aws-fargate-magiclub` 프로젝트 경로에서 `sh deploy.sh` 명령을 통해 AWS 클라우드 리소스 및 ECS Service(애플리케이션)가 한번에 프로비저닝 됩니다.
 
 ```
+export AWS_PROFILE=terra
+
 cd aws-fargate-magiclub
+
+chmod +x deploy.sh
 
 sh deploy.sh
 ```
