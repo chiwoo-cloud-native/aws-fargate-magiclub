@@ -1,4 +1,5 @@
 resource "aws_service_discovery_service" "this" {
+  count = var.cloud_map_namespace_id == null ? 0 : 1
   name = var.container_name
 
   dns_config {

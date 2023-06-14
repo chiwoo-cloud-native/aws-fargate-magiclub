@@ -19,7 +19,7 @@ resource "aws_lb_target_group" "tg8080" {
 }
 
 resource "aws_lb_listener_rule" "host_based_weighted_routing" {
-  listener_arn = data.aws_alb_listener.pub_https.arn
+  listener_arn = data.aws_alb_listener.pub_http.arn
   priority     = 1
 
   action {
@@ -35,11 +35,11 @@ resource "aws_lb_listener_rule" "host_based_weighted_routing" {
 
 }
 
-resource "aws_route53_record" "this" {
-  zone_id = data.aws_route53_zone.public.zone_id
-  name    = local.hostname
-  type    = "CNAME"
-  ttl     = "300"
-  records = [ data.aws_alb.pub.dns_name ]
-  allow_overwrite = true
-}
+#resource "aws_route53_record" "this" {
+#  zone_id = data.aws_route53_zone.public.zone_id
+#  name    = local.hostname
+#  type    = "CNAME"
+#  ttl     = "300"
+#  records = [ data.aws_alb.pub.dns_name ]
+#  allow_overwrite = true
+#}

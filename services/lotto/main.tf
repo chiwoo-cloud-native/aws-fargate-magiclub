@@ -36,7 +36,7 @@ module "lotto" {
   subnets                = data.aws_subnets.apps.ids
   security_group_ids     = [aws_security_group.container_sg.id]
   target_group_arn       = aws_lb_target_group.tg8080.arn
-  cloud_map_namespace_id = data.aws_service_discovery_dns_namespace.this.id
+  # cloud_map_namespace_id = data.aws_service_discovery_dns_namespace.this.id
 
   depends_on = [aws_ecr_repository.this]
 }

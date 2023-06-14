@@ -84,8 +84,11 @@ resource "aws_ecs_service" "this" {
 
   propagate_tags = var.propagate_tags
 
-  service_registries {
-    registry_arn = aws_service_discovery_service.this.arn
+  dynamic "service_registries" {
+    for_each = var.cloud_map_namespace_id != null ? [1] : []
+    content {
+      registry_arn = concat(aws_service_discovery_service.this.*.arn[0],[""])[0]
+    }
   }
 
   lifecycle {

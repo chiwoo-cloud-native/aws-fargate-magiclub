@@ -272,4 +272,5 @@ variable "propagate_tags" {
 variable "cloud_map_namespace_id" {
   description = "cloud_map_namespace_id of Cloud Map Service Discovery"
   type        = string
+  default     = null
 }
