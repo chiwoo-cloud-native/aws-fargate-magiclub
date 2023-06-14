@@ -5,4 +5,4 @@ env            = "p"   # environment alias
 domain         = "sympledemo.tk"
 owner          = "symplesims@gmail.com"
 team           = "DevOps"
-kms_alias      = "YOUR-KMS-ALIAS"
+kms_alias      = "magiclub-cmk"
