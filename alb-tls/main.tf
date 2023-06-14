@@ -23,13 +23,28 @@ module "alb" {
     {
       port        = 80
       protocol    = "HTTP"
-      action_type = "fixed-response"
-      fixed_response  = {
-        content_type = "text/plain"
-        message_body = "Fixed Static message"
-        status_code  = "200"
+      action_type = "redirect"
+      redirect    = {
+        port        = "443"
+        protocol    = "HTTPS"
+        status_code = "HTTP_301"
       }
     }
+  ]
+
+  https_listeners = [
+    # HTTPS Listener Index = 0 for HTTPS 443
+    {
+      port            = 443
+      protocol        = "HTTPS"
+      certificate_arn = data.aws_acm_certificate.this.arn
+      action_type     = "fixed-response"
+      fixed_response  = {
+        content_type = "text/plain"
+        message_body = "Fixed Static message - for Root Context"
+        status_code  = "200"
+      }
+    },
   ]
 
   tags = merge(local.tags, {
