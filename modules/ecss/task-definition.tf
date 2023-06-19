@@ -12,7 +12,7 @@ locals {
     options   = {
       awslogs-group         = local.cwlog_grp_name
       awslogs-region        = local.region
-      awslogs-stream-prefix = local.service_name
+      awslogs-stream-prefix = local.ecs_service_name
     }
   } : {
     logDriver = null
@@ -20,7 +20,7 @@ locals {
   }
 
   container_definition = {
-    name         = local.service_name
+    name         = local.ecs_container_name
     image        = var.container_image
     essential    = var.essential
     memory       = var.memory
@@ -42,7 +42,7 @@ locals {
 }
 
 resource "aws_ecs_task_definition" "this" {
-  family                   = format("%s-td", local.service_name)
+  family                   = local.task_definition_name
   requires_compatibilities = var.requires_compatibilities
   network_mode             = "awsvpc"
   task_role_arn            = aws_iam_role.task.arn
@@ -51,6 +51,5 @@ resource "aws_ecs_task_definition" "this" {
   memory                   = var.memory
   container_definitions    = "[${jsonencode(local.container_definition)}]"
 
-  tags = merge(var.tags, { Name = local.service_name })
-
+  tags = merge(var.tags, { Name = local.task_definition_name })
 }

@@ -1,5 +1,3 @@
-data "aws_region" "current" {}
-
 data "aws_vpc" "this" {
   filter {
     name   = "tag:Name"
@@ -36,4 +34,8 @@ data "aws_alb_listener" "pub_http" {
   port              = 80
 }
 
+data "aws_service_discovery_http_namespace" "ans" {
+  count = var.enable_service_connect ? 1 : 0
+  name  = "ans.${var.context.pri_domain}"
+}
 

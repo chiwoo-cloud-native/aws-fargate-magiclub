@@ -12,7 +12,7 @@ resource "aws_service_discovery_service" "this" {
   }
 
   tags = merge(var.tags, {
-    Name = local.service_name
+    Name = local.ecs_service_name
   })
 
 }

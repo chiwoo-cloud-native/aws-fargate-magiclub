@@ -289,3 +289,22 @@ variable "enable_service_connect" {
   type    = bool
   default = false
 }
+
+variable "service_connect_configuration" {
+  type        = any
+  default     = {}
+  description = <<EOF
+The ECS Service Connect configuration for this service to discover and connect to services, and be discovered by, and connected from, other services within a namespace
+
+  service_connect_configuration = {
+    service = {
+      client_alias = {
+        port     = 80
+        dns_name = "ecs-sample"
+      }
+      port_name      = "ecs-sample"
+      discovery_name = "ecs-sample"
+    }
+  }
+EOF
+}
