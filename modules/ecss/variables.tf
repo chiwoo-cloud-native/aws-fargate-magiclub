@@ -14,9 +14,10 @@ variable "context" {
   })
 }
 
-variable "task_role_arn" {
-  description = "task_role_arn"
+variable "task_policy_json" {
+  description = "json formatted string (ex: data.aws_iam_policy_document.custom.json)"
   type        = string
+  default     = null
 }
 
 variable "execution_role_arn" {

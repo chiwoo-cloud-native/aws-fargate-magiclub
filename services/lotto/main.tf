@@ -35,7 +35,11 @@ module "lotto" {
 
   vpc_id             = data.aws_vpc.this.id
   cluster_id         = data.aws_ecs_cluster.this.id
-  task_role_arn      = data.aws_iam_role.ecs_task_ssm_role.arn
-  execution_role_arn = data.aws_iam_role.ecs_task_execution_role.arn
+  task_policy_json   = data.aws_iam_policy_document.custom.json
+  execution_role_arn = data.aws_iam_role.task_execution.arn
   subnets            = data.aws_subnets.apps.ids
+
+  depends_on = [
+    aws_lb_target_group.tg8080
+  ]
 }

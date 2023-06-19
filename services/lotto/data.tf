@@ -19,12 +19,8 @@ data "aws_subnets" "apps" {
   }
 }
 
-data "aws_iam_role" "ecs_task_execution_role" {
+data "aws_iam_role" "task_execution" {
   name = format("%sECSTaskExecutionRole", local.project)
-}
-
-data "aws_iam_role" "ecs_task_ssm_role" {
-  name = format("%sECSCommandRole", local.project)
 }
 
 data "aws_ecs_cluster" "this" {

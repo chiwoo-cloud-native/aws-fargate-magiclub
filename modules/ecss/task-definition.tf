@@ -45,13 +45,11 @@ resource "aws_ecs_task_definition" "this" {
   family                   = format("%s-td", local.service_name)
   requires_compatibilities = var.requires_compatibilities
   network_mode             = "awsvpc"
-
-  task_role_arn      = var.task_role_arn
-  execution_role_arn = var.execution_role_arn
-
-  cpu                   = var.cpu
-  memory                = var.memory
-  container_definitions = "[${jsonencode(local.container_definition)}]"
+  task_role_arn            = aws_iam_role.task.arn
+  execution_role_arn       = var.execution_role_arn
+  cpu                      = var.cpu
+  memory                   = var.memory
+  container_definitions    = "[${jsonencode(local.container_definition)}]"
 
   tags = merge(var.tags, { Name = local.service_name })
 
