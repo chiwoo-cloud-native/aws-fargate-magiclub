@@ -1,43 +1,41 @@
+module "ctx" {
+  source  = "../../modules/context/"
+  context = var.context
+}
+
 locals {
-  name_prefix = "${var.project}-${var.region}${var.env}"
-  region             = data.aws_region.current.name
-  ecr_repository_url = format("%s", aws_ecr_repository.this.repository_url)
-  tags        = {
-    Project     = var.project
-    Environment = var.environment
-    Owner       = var.owner
-    Team        = var.team
-  }
+  container_name = "lotto-api"
+  container_port = 8080
+  project        = module.ctx.project
+  name_prefix    = module.ctx.name_prefix
+  # ecr_repository_url = format("%s", aws_ecr_repository.this.repository_url)
+  # tags               = module.context.tags
 }
 
 module "lotto" {
-  source = "../ecs-service/"
+  source  = "../../modules/ecss/"
+  context = module.ctx.context
 
-  project         = var.project
-  region          = local.region
-  name_prefix     = local.name_prefix
-  container_name  = var.container_name
-  container_port  = var.container_port
-  container_image = local.ecr_repository_url
-  cpu             = 512
-  memory          = 1024
-  desired_count   = 1
-  port_mappings   = [
+  container_image          = var.repository_url
+  container_name           = local.container_name
+  container_port           = local.container_port
+  enable_discovery_service = var.enable_discovery_service
+  enable_service_connect   = var.enable_service_connect
+  cpu                      = 256
+  memory                   = 512
+  desired_count            = 1
+  port_mappings            = [
     {
-      "protocol" : "tcp",
-      "containerPort" : var.container_port
+      protocol      = "tcp"
+      containerPort = local.container_port
+      name          = local.container_name
     },
   ]
+  target_group_arn = aws_lb_target_group.tg8080.arn
 
-  vpc_id                 = data.aws_vpc.this.id
-  cluster_id             = data.aws_ecs_cluster.this.id
-  task_role_arn          = data.aws_iam_role.ecs_task_ssm_role.arn
-  execution_role_arn     = data.aws_iam_role.ecs_task_execution_role.arn
-  subnets                = data.aws_subnets.apps.ids
-  security_group_ids     = [aws_security_group.container_sg.id]
-  target_group_arn       = aws_lb_target_group.tg8080.arn
-  # cloud_map_namespace_id = data.aws_service_discovery_dns_namespace.this.id
-
-  depends_on = [aws_ecr_repository.this]
+  vpc_id             = data.aws_vpc.this.id
+  cluster_id         = data.aws_ecs_cluster.this.id
+  task_role_arn      = data.aws_iam_role.ecs_task_ssm_role.arn
+  execution_role_arn = data.aws_iam_role.ecs_task_execution_role.arn
+  subnets            = data.aws_subnets.apps.ids
 }
-

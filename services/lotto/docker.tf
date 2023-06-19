@@ -1,9 +1,10 @@
 resource "docker_image" "this" {
   name = "lotto"
   build {
-    path       = "./docker"
+    context    = "./docker"
     dockerfile = "Dockerfile"
-    tag        = ["${local.ecr_repository_url}:latest"]
+    platform   = "linux/amd64"
+    tag        = ["${local.container_image}:latest"]
     build_arg  = {
       key1 : "value1"
     }
@@ -18,7 +19,7 @@ resource "null_resource" "push" {
   provisioner "local-exec" {
     command     = <<EOF
 sleep 3s
-sh ${path.module}/docker/publish.sh ${local.ecr_repository_url} latest
+sh ${path.module}/docker/publish.sh ${local.container_image} latest
 EOF
     interpreter = ["bash", "-c"]
   }

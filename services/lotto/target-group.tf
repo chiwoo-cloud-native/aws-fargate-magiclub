@@ -1,10 +1,6 @@
-locals {
-  hostname =  format("%s.%s", var.container_name, var.domain)
-}
-
 resource "aws_lb_target_group" "tg8080" {
-  name        = format("%s-%s-tg8080", var.project, var.container_name)
-  port        = var.container_port
+  name        = format("%s-%s-tg8080", local.project, local.container_name)
+  port        = local.container_port
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = data.aws_vpc.this.id
@@ -33,19 +29,4 @@ resource "aws_lb_listener_rule" "rule" {
     }
   }
 
-#  condition {
-#    host_header {
-#      values = [ local.hostname ]
-#    }
-#  }
-
 }
-
-#resource "aws_route53_record" "this" {
-#  zone_id = data.aws_route53_zone.public.zone_id
-#  name    = local.hostname
-#  type    = "CNAME"
-#  ttl     = "300"
-#  records = [ data.aws_alb.pub.dns_name ]
-#  allow_overwrite = true
-#}

@@ -1,8 +1,11 @@
-project        = "magiclub"
-region         = "an2" # AWS region alias
-environment    = "PoC"
-env            = "p"   # environment alias
-domain         = "sympledemo.tk"
-owner          = "symplesims@gmail.com"
-team           = "DevOps"
-kms_alias      = "magiclub-cmk"
+context = {
+  project      = "magiclub"
+  region       = "ap-northeast-2"
+  environment  = "PoC"
+  owner        = "symplesims@gmail.com"
+  team         = "DevOps"
+  domain       = null
+  pri_domain   = "symplesims.local"
+}
+
+enable_service_connect = true

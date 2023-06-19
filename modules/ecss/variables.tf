@@ -1,13 +1,17 @@
-variable "name_prefix" {
-  type        = string
-}
-
-variable "project" {
-  type        = string
-}
-
-variable "region" {
-  type        = string
+variable "context" {
+  type = object({
+    project      = string # project name is usally account's project name or platform name
+    name_prefix  = string
+    region       = string # describe default region to create a resource from aws
+    region_alias = string
+    environment  = string # Runtime Environment such as develop, stage, production
+    env_alias    = string
+    owner        = string # project owner
+    team         = string # Team name of Devops Transformation
+    tags         = map(string)
+    pri_domain   = string # private domain name (ex, tools.customer.co.kr)
+    domain       = optional(string) # public toolchain domain name (ex, tools.customer.co.kr)
+  })
 }
 
 variable "task_role_arn" {
@@ -80,7 +84,7 @@ variable "command" {
 variable "port_mappings" {
   description = "port_mappings"
   type        = list(any)
-  default     = []
+  default     = null
   /*
   port_mappings = [
     {
@@ -252,11 +256,11 @@ variable "subnets" {
   type        = list(string)
 }
 
-variable "security_group_ids" {
-  description = "security_group_ids of ECS Service"
-  type        = list(string)
-}
-
+#variable "security_group_ids" {
+#  description = "security_group_ids of ECS Service"
+#  type        = list(string)
+#}
+#
 variable "target_group_arn" {
   description = "target_group_arn of ECS Service"
   type        = string
@@ -273,4 +277,14 @@ variable "cloud_map_namespace_id" {
   description = "cloud_map_namespace_id of Cloud Map Service Discovery"
   type        = string
   default     = null
+}
+
+variable "enable_discovery_service" {
+  type    = bool
+  default = false
+}
+
+variable "enable_service_connect" {
+  type    = bool
+  default = false
 }

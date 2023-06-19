@@ -1,3 +1,14 @@
+#variable "project" { type = string }
+#variable "region" { type = string }
+#variable "environment" { type = string }
+#variable "owner" { type = string }
+#variable "team" { type = string }
+#variable "pri_domain" { type = string }
+#variable "domain" {
+#  type    = string
+#  default = null
+#}
+
 variable "context" {
   type = object({
     project      = string # project name is usally account's project name or platform name
@@ -8,19 +19,4 @@ variable "context" {
     pri_domain   = string # private domain name (ex, tools.customer.co.kr)
     domain       = optional(string) # public toolchain domain name (ex, tools.customer.co.kr)
   })
-}
-
-variable "repository_url" {
-  type    = string
-  default = null
-}
-
-variable "enable_discovery_service" {
-  type    = bool
-  default = false
-}
-
-variable "enable_service_connect" {
-  type    = bool
-  default = false
 }

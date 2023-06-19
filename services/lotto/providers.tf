@@ -9,14 +9,13 @@ terraform {
 
     docker = {
       source  = "kreuzwerker/docker"
-      version = "= 2.16.0"
+      version = "= 2.25.0"
     }
   }
 }
 
 provider "aws" {
-  profile = "terra"
-  region  = "ap-northeast-2"
+  region  = var.context.region
 }
 
 data "aws_ecr_authorization_token" "ecr" {}
@@ -25,7 +24,7 @@ provider "docker" {
   host = "unix:///var/run/docker.sock"
 
   registry_auth {
-    address  = local.ecr_repository_url
+    address  = local.container_image
     username = data.aws_ecr_authorization_token.ecr.user_name
     password = data.aws_ecr_authorization_token.ecr.password
   }
