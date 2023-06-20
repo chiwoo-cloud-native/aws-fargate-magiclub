@@ -13,5 +13,5 @@ data "aws_service_discovery_dns_namespace" "dns" {
 
 data "aws_service_discovery_http_namespace" "ans" {
   count = var.enable_service_connect ? 1 : 0
-  name  = "ans.${local.pri_domain}"
+  name  = local.pri_domain
 }

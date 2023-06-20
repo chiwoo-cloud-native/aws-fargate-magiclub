@@ -90,7 +90,7 @@ variable "port_mappings" {
   port_mappings = [
     {
       "protocol": "tcp",
-      "containerPort": 8"
+      "containerPort": 8
     }
   ]
   */
@@ -257,11 +257,11 @@ variable "subnets" {
   type        = list(string)
 }
 
-#variable "security_group_ids" {
-#  description = "security_group_ids of ECS Service"
-#  type        = list(string)
-#}
-#
+variable "security_group_ids" {
+  description = "security_group_ids of ECS Service"
+  type        = list(string)
+}
+
 variable "target_group_arn" {
   description = "target_group_arn of ECS Service"
   type        = string

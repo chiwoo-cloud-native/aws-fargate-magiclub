@@ -4,8 +4,8 @@ module "ctx" {
 }
 
 locals {
-  container_name = "lotto-api"
-  container_port = 8080
+  container_name = "hello-api"
+  container_port = 8090
   project        = module.ctx.project
   name_prefix    = module.ctx.name_prefix
 }

@@ -19,25 +19,27 @@ locals {
     options   = {}
   }
 
-  container_definition = {
-    name         = local.ecs_container_name
-    image        = var.container_image
-    essential    = var.essential
-    memory       = var.memory
-    cpu          = var.cpu
-    command      = toset(var.command)
-    portMappings = toset(local.port_mappings)
-    environment  = toset(var.environments)
-    secrets      = toset(var.secrets)
-    ulimits      = toset(var.ulimits)
+  container_definition = [
+    {
+      name         = local.ecs_container_name
+      image        = var.container_image
+      essential    = var.essential
+      memory       = var.memory
+      cpu          = var.cpu
+      command      = toset(var.command)
+      portMappings = toset(local.port_mappings)
+      environment  = toset(var.environments)
+      secrets      = toset(var.secrets)
+      ulimits      = toset(var.ulimits)
 
-    logConfiguration = local.logConfiguration
+      logConfiguration = local.logConfiguration
 
-    linuxParameters = {
-      initProcessEnabled = var.initProcessEnabled
+      linuxParameters = {
+        initProcessEnabled = var.initProcessEnabled
+      }
+
     }
-
-  }
+  ]
 
 }
 
@@ -49,7 +51,7 @@ resource "aws_ecs_task_definition" "this" {
   execution_role_arn       = var.execution_role_arn
   cpu                      = var.cpu
   memory                   = var.memory
-  container_definitions    = "[${jsonencode(local.container_definition)}]"
+  container_definitions    = jsonencode(local.container_definition)
 
   tags = merge(var.tags, { Name = local.task_definition_name })
 }

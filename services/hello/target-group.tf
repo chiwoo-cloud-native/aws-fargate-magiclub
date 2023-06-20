@@ -7,7 +7,7 @@ resource "aws_lb_target_group" "this" {
 
   health_check {
     enabled             = true
-    path                = "/health"
+    path                = "/hello/health"
     healthy_threshold   = 2
     unhealthy_threshold = 3
     matcher             = "200-302"
@@ -16,7 +16,7 @@ resource "aws_lb_target_group" "this" {
 
 resource "aws_lb_listener_rule" "rule" {
   listener_arn = data.aws_alb_listener.pub_http.arn
-  priority     = 1
+  priority     = 2
 
   action {
     type             = "forward"
@@ -25,7 +25,7 @@ resource "aws_lb_listener_rule" "rule" {
 
   condition {
     path_pattern {
-      values = ["/api/*", "/health"]
+      values = [ "/hello/*" ]
     }
   }
 

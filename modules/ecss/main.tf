@@ -38,7 +38,7 @@ resource "aws_ecs_service" "this" {
   network_configuration {
     assign_public_ip = var.assign_public_ip
     subnets          = toset(var.subnets)
-    security_groups  = [aws_security_group.this.id]
+    security_groups  = var.security_group_ids
   }
 
   propagate_tags = var.propagate_tags
@@ -101,7 +101,6 @@ resource "aws_ecs_service" "this" {
   tags = merge(var.tags, { Name = local.ecs_service_name })
 
   depends_on = [
-    aws_security_group.this,
     aws_ecs_task_definition.this
   ]
 }

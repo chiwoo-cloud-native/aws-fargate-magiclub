@@ -1,13 +1,14 @@
 locals {
-  sg_name = format("%s-%s-sg", local.name_prefix, var.container_name)
+  sg_name          = format("%s-%s-sg", local.name_prefix, local.container_name)
+  apps_cidr_blocks = [for s in data.aws_subnet.apps : s.cidr_block]
 }
 
 resource "aws_security_group" "this" {
   name        = local.sg_name
-  description = format("%s ECS Service", var.container_name)
+  description = format("%s ECS Service", local.container_name)
   vpc_id      = data.aws_vpc.this.id
 
-  tags = merge(local.tags, {
+  tags = merge(module.ctx.tags, {
     Name = local.sg_name
   })
 }
@@ -33,13 +34,23 @@ resource "aws_security_group_rule" "out443" {
   security_group_id = aws_security_group.this.id
 }
 
+resource "aws_security_group_rule" "outApp" {
+  type              = "egress"
+  description       = "Egress Internal VPC"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "tcp"
+  cidr_blocks       = local.apps_cidr_blocks
+  security_group_id = aws_security_group.this.id
+}
+
 # ingress
 resource "aws_security_group_rule" "inApp" {
   type              = "ingress"
-  description       = "ECS Service"
-  from_port         = var.container_port
-  to_port           = var.container_port
+  description       = "Ingress Internal VPC"
+  from_port         = local.container_port
+  to_port           = local.container_port
   protocol          = "tcp"
   security_group_id = aws_security_group.this.id
-  cidr_blocks       = compact(concat([data.aws_vpc.this.cidr_block]))
+  cidr_blocks       = [data.aws_vpc.this.cidr_block]
 }
