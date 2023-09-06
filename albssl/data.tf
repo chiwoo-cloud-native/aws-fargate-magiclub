@@ -4,6 +4,10 @@ data "aws_acm_certificate" "this" {
   # statuses = ["ISSUED", "PENDING_VALIDATION", "INACTIVE"]
 }
 
+data "aws_route53_zone" "public" {
+  name = module.ctx.domain
+}
+
 data "aws_vpc" "this" {
   filter {
     name   = "tag:Name"
