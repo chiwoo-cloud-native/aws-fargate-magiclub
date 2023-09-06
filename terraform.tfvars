@@ -1,11 +1,11 @@
 context = {
   project      = "magiclub"
   region       = "ap-northeast-2"
-  environment  = "PoC"
+  environment  = "Development"
   owner        = "symplesims@gmail.com"
   team         = "DevOps"
   domain       = null
-  pri_domain   = "symplesims.local"
+  pri_domain   = "magiclub.local"
 }
 
 enable_service_connect = true

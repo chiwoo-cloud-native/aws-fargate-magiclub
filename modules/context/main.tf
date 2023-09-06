@@ -21,7 +21,7 @@ locals {
 
   region_alias = lookup(local.aws_region_codes, var.context.region, "nn")
   env_alias    = lower(substr(var.context.environment, 0, 1))
-  name_prefix = format("%s-%s%s", var.context.project, local.region_alias, local.env_alias)
+  name_prefix  = format("%s-%s%s", var.context.project, local.region_alias, local.env_alias)
 
   tags = {
     Project     = var.context.project
