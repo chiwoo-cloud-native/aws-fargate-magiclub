@@ -9,13 +9,3 @@ variable "context" {
     domain       = optional(string) # public toolchain domain name (ex, tools.customer.co.kr)
   })
 }
-
-variable "enable_discovery_service" {
-  type    = bool
-  default = false
-}
-
-variable "enable_service_connect" {
-  type    = bool
-  default = false
-}

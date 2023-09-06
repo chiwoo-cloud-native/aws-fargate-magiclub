@@ -1,16 +1,16 @@
+module "ctx" {
+  source  = "../modules/context/"
+  context = var.context
+}
+
 locals {
-  name_prefix = "${var.project}-${var.region}${var.env}"
-  alb_name = format("%s-pub-alb", local.name_prefix)
-  tags        = {
-    Project     = var.project
-    Environment = var.environment
-    Owner       = var.owner
-    Team        = var.team
-  }
+  name_prefix = module.ctx.name_prefix
+  alb_name    = format("%s-pub-alb", local.name_prefix)
+  tags        = module.ctx.tags
 }
 
 module "alb" {
-  source = "registry.terraform.io/terraform-aws-modules/alb/aws"
+  source  = "registry.terraform.io/terraform-aws-modules/alb/aws"
   version = "8.5.0"
 
   name               = local.alb_name
@@ -41,7 +41,7 @@ module "alb" {
       action_type     = "fixed-response"
       fixed_response  = {
         content_type = "text/plain"
-        message_body = "Fixed Static message - for Root Context"
+        message_body = "Welcome!"
         status_code  = "200"
       }
     },

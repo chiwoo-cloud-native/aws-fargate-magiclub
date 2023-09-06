@@ -4,8 +4,8 @@ context = {
   environment  = "Development"
   owner        = "symplesims@gmail.com"
   team         = "DevOps"
-  domain       = null
+  domain       = "opencaffes.com"
   pri_domain   = "magiclub.local"
 }
 
-enable_service_connect = true
+enable_service_connect = false
