@@ -166,20 +166,31 @@ sh deploy.sh
 
 ## Check Service
 
-프로비저닝이 완료 되면 cURL 명령을 통해 샘플 애플리케이션(lotto) 이 실제로 동작하는지 확인 할 수 있습니다.
+`curl` 명령을 통해 Frontend ALB 의 DNS 이름으로 ECS 애플리케이션 상태 및 요청을 확인할 수 있습니다.
 
-### Check Application Health 
+### Check Hello 서비스
 
-`curl` 명령을 통해 Frontend ALB 의 DNS 이름으로 ECS 애플리케이션 상태 및 요청을 확인할 수 있습니다. 
-
-```
-curl --location -X GET 'http://_front-alb-dns-name_/health'
-```
-
-### Check Application Feature 
+프로비저닝이 완료 되면 cURL 명령을 통해 hello 애플리케이션이 잘 동작하는지 확인 할 수 있습니다.
 
 ```
-curl -H 'Content-Type: application/json' -X GET http://_front-alb-dns-name_/api/lotto/lucky 
+# check health health 
+curl -i http://<ALB_DNS_NAME>/hello/health
+
+# check api
+curl -i http://<ALB_DNS_NAME>/hello/api/greetings
+```
+
+
+### Check Lotto 서비스
+
+프로비저닝이 완료 되면 cURL 명령을 통해 lotto 애플리케이션이 잘 동작하는지 확인 할 수 있습니다.
+
+```
+# check health
+curl -i -X GET --location 'http://<ALB_DNS_NAME>/health'
+
+# check api
+curl -H 'Content-Type: application/json' -X GET --location 'http://<ALB_DNS_NAME>/api/lotto/lucky' 
 
 # 예시
 curl -H 'Content-Type: application/json' -X GET http://magiclub-an2p-pub-alb-136632589.ap-northeast-2.elb.amazonaws.com/api/lotto/lucky
