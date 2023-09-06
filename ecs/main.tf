@@ -1,11 +1,12 @@
+module "ctx" {
+  source  = "../modules/context/"
+  context = var.context
+}
+
 locals {
-  name_prefix = "${var.project}-${var.region}${var.env}"
-  tags        = {
-    Project     = var.project
-    Environment = var.environment
-    Owner       = var.owner
-    Team        = var.team
-  }
+  project     = module.ctx.project
+  name_prefix = module.ctx.name_prefix
+  tags        = module.ctx.tags
 }
 
 module "ecs" {

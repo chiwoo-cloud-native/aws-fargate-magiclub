@@ -34,11 +34,11 @@ resource "aws_security_group_rule" "out443" {
   security_group_id = aws_security_group.this.id
 }
 
-resource "aws_security_group_rule" "outHello" {
+resource "aws_security_group_rule" "outApp" {
   type              = "egress"
-  description       = "to hello-api"
-  from_port         = 8090
-  to_port           = 8090
+  description       = "Egress Internal VPC"
+  from_port         = 0
+  to_port           = 0
   protocol          = "tcp"
   cidr_blocks       = local.apps_cidr_blocks
   security_group_id = aws_security_group.this.id
@@ -47,7 +47,7 @@ resource "aws_security_group_rule" "outHello" {
 # ingress
 resource "aws_security_group_rule" "inApp" {
   type              = "ingress"
-  description       = "ECS Service"
+  description       = "Ingress Internal VPC"
   from_port         = local.container_port
   to_port           = local.container_port
   protocol          = "tcp"

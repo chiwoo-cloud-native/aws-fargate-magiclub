@@ -166,26 +166,49 @@ sh deploy.sh
 
 ## Check Service
 
-프로비저닝이 완료 되면 cURL 명령을 통해 샘플 애플리케이션(lotto) 이 실제로 동작하는지 확인 할 수 있습니다.
+`curl` 명령을 통해 Frontend ALB 의 DNS 이름으로 ECS 애플리케이션 상태 및 요청을 확인할 수 있습니다.
 
-### Check Application Health 
+### Check Hello 서비스
 
-도메인을 `sympledemo.tk` 으로 설정 하였다면 `https://lotto.sympledemo.tk` 으로 서비스 앤드포인트로 액세스 할 수 있습니다.
-
-```
-curl --location -X GET 'https://lotto.sympledemo.tk/health'
-```
-
-### Check Application Feature 
+프로비저닝이 완료 되면 cURL 명령을 통해 hello 애플리케이션이 잘 동작하는지 확인 할 수 있습니다.
 
 ```
-curl --location -X GET 'https://lotto.sympledemo.tk/api/lotto/lucky' -H 'Content-Type: application/json'
+# check health health 
+curl -i http://<ALB_DNS_NAME>/hello/health
+
+# check api
+curl -i http://<ALB_DNS_NAME>/hello/api/greetings
 ```
+
+
+### Check Lotto 서비스
+
+프로비저닝이 완료 되면 cURL 명령을 통해 lotto 애플리케이션이 잘 동작하는지 확인 할 수 있습니다.
+
+```
+# check health
+curl -i -X GET --location 'http://<ALB_DNS_NAME>/health'
+
+# check api
+curl -H 'Content-Type: application/json' -X GET --location 'http://<ALB_DNS_NAME>/api/lotto/lucky' 
+
+# 예시
+curl -H 'Content-Type: application/json' -X GET http://magiclub-an2p-pub-alb-136632589.ap-northeast-2.elb.amazonaws.com/api/lotto/lucky
+```
+
+#### lotto 애플리케이션 확인 
+
+[spring-lotto-router-handler](https://github.com/simplydemo/spring-lotto-router-handler) 샘플을 참고할 수 있습니다.
+
+```
+java -jar services/lotto/docker/lotto-service.jar
+```
+
 
 ### AWS CloudWatch 로그 그룹의 로그 확인
 
 ```
-aws logs tail /ecs/magiclub-an2p-ecs-lotto --since 1s --follow
+aws logs tail /ecs/magiclub-an2p-lotto-api-ecss --since 1s --follow
 
 -------------
 2022-07-06T08:49:07.117000+00:00 magiclub-an2p-ecs-lotto/magiclub-an2p-ecs-lotto/8da960d491c0453aa90c3b9f39504d2a 2022-07-06 08:49:07.116  INFO 8 --- [or-http-epoll-4] ttoRouterFunction$LottoHandler$Companion : result: [2, 5, 22, 25, 32, 38]
@@ -211,10 +234,17 @@ sh destroy.sh
 
 ```
 terraform {
+  required_version = ">= 1.3.0"
+
   required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 4.33.0, < 5.0.0"
+    }
+
     docker = {
       source  = "kreuzwerker/docker"
-      version = "= 2.16.0"
+      version = "= 2.25.0"
     }
   }
 }
@@ -247,27 +277,28 @@ aws-fargate-magiclub 프로비저닝을 위한 Terraform 주요 정보를 참고
 
 ### Requirements
 
-| Name      | Version     |
-|-----------|-------------|
-| terraform | >= 1.0.0    |
-| aws       | >= 3.75.1   |
-| docker    | >= 20.10.1  |
+| Name      | Version    |
+|-----------|------------|
+| terraform | >= 1.3.0   |
+| aws       | >= 4.33.0  |
+| docker    | >= 20.10.1 |
 
 ### Providers
 
-| Name               | Version   |
-|--------------------|-----------|
-| hashicorp/aws      | >= 3.75.1 |
-| kreuzwerker/docker | = 2.16.0  |
+| Name               | Version    |
+|--------------------|------------|
+| hashicorp/aws      | >= 4.33.0  |
+| kreuzwerker/docker | = 2.25.0 |
 
 ### Modules
 
 | Name                      | Version | Provider |
 |---------------------------|:-------:|:--------:|
-| terraform-aws-modules/vpc | latest  |   AWS    |
-| terraform-aws-modules/alb | latest  |   AWS    |
+| terraform-aws-modules/vpc |  4.0.2  |   AWS    |
+| terraform-aws-modules/alb |  8.5.0  |   AWS    |
 | terraform-aws-modules/ecs |  3.5.0  |   AWS    |
-| ecs-service               |   N/A   |  Local   |
+| modules/context           |   N/A   |  Local   |
+| modules/ecss              |   N/A   |  Local   |
 
 ### Inputs
 

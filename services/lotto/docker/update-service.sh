@@ -5,4 +5,7 @@
 
 # for ecs service
 # if you new container image push to ecr
-aws ecs update-service --cluster demobtc-an2t-ecs --service lotto --force-new-deployment
+# aws ecs update-service --cluster magiclub-an2p-ecs --service magiclub-an2p-lotto-api-ecss --force-new-deployment
+# aws ecs update-service --cluster magiclub-an2p-ecs --service magiclub-an2p-hello-api-ecss --force-new-deployment
+
+

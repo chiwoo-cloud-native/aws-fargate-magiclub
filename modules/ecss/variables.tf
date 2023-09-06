@@ -1,18 +1,23 @@
-variable "name_prefix" {
-  type        = string
+variable "context" {
+  type = object({
+    project      = string # project name is usally account's project name or platform name
+    name_prefix  = string
+    region       = string # describe default region to create a resource from aws
+    region_alias = string
+    environment  = string # Runtime Environment such as develop, stage, production
+    env_alias    = string
+    owner        = string # project owner
+    team         = string # Team name of Devops Transformation
+    tags         = map(string)
+    pri_domain   = string # private domain name (ex, tools.customer.co.kr)
+    domain       = optional(string) # public toolchain domain name (ex, tools.customer.co.kr)
+  })
 }
 
-variable "project" {
+variable "task_policy_json" {
+  description = "json formatted string (ex: data.aws_iam_policy_document.custom.json)"
   type        = string
-}
-
-variable "region" {
-  type        = string
-}
-
-variable "task_role_arn" {
-  description = "task_role_arn"
-  type        = string
+  default     = null
 }
 
 variable "execution_role_arn" {
@@ -80,12 +85,12 @@ variable "command" {
 variable "port_mappings" {
   description = "port_mappings"
   type        = list(any)
-  default     = []
+  default     = null
   /*
   port_mappings = [
     {
       "protocol": "tcp",
-      "containerPort": 8"
+      "containerPort": 8
     }
   ]
   */
@@ -273,4 +278,32 @@ variable "cloud_map_namespace_id" {
   description = "cloud_map_namespace_id of Cloud Map Service Discovery"
   type        = string
   default     = null
+}
+
+variable "enable_discovery_service" {
+  type    = bool
+  default = false
+}
+
+variable "enable_service_connect" {
+  type    = bool
+  default = false
+}
+
+variable "service_connect_configuration" {
+  type        = any
+  default     = {}
+  description = <<EOF
+The ECS Service Connect configuration for this service to discover and connect to services, and be discovered by, and connected from, other services within a namespace
+
+  service_connect_configuration = {
+    service = {
+      port_name      = "ecs-sample"
+      client_alias = {
+        port     = 80
+      }
+    }
+  }
+
+EOF
 }

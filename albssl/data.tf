@@ -1,6 +1,7 @@
 data "aws_acm_certificate" "this" {
-  domain = var.domain
-  statuses = ["ISSUED", "PENDING_VALIDATION", "INACTIVE"]
+  domain   = var.context.domain
+  statuses = ["ISSUED"]
+  # statuses = ["ISSUED", "PENDING_VALIDATION", "INACTIVE"]
 }
 
 data "aws_vpc" "this" {
@@ -18,6 +19,6 @@ data "aws_subnets" "pub" {
 
   filter {
     name   = "tag:Name"
-    values = [ format("%s-pub*", local.name_prefix) ]
+    values = [format("%s-pub*", local.name_prefix)]
   }
 }
