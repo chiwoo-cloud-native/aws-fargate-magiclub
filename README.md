@@ -196,6 +196,15 @@ curl -H 'Content-Type: application/json' -X GET --location 'http://<ALB_DNS_NAME
 curl -H 'Content-Type: application/json' -X GET http://magiclub-an2p-pub-alb-136632589.ap-northeast-2.elb.amazonaws.com/api/lotto/lucky
 ```
 
+#### lotto 애플리케이션 확인 
+
+[spring-lotto-router-handler](https://github.com/simplydemo/spring-lotto-router-handler) 샘플을 참고할 수 있습니다.
+
+```
+java -jar services/lotto/docker/lotto-service.jar
+```
+
+
 ### AWS CloudWatch 로그 그룹의 로그 확인
 
 ```

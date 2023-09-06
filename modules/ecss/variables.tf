@@ -298,13 +298,12 @@ The ECS Service Connect configuration for this service to discover and connect t
 
   service_connect_configuration = {
     service = {
+      port_name      = "ecs-sample"
       client_alias = {
         port     = 80
-        dns_name = "ecs-sample"
       }
-      port_name      = "ecs-sample"
-      discovery_name = "ecs-sample"
     }
   }
+
 EOF
 }
