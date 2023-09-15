@@ -28,6 +28,7 @@ locals {
     Environment = var.context.environment
     Team        = var.context.team
     Owner       = var.context.owner
+    ManagedBy   = "Terraform"
   }
 
 }
