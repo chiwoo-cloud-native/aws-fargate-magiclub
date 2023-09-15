@@ -12,7 +12,7 @@ data "aws_subnets" "apps" {
   }
   filter {
     name   = "tag:Name"
-    values = [ format("%s-apps*", local.name_prefix) ]
+    values = [format("%s-apps*", local.name_prefix)]
   }
 }
 
@@ -33,9 +33,9 @@ data "aws_alb" "pub" {
   name = format("%s-pub-alb", local.name_prefix)
 }
 
-data "aws_alb_listener" "pub_http" {
+data "aws_alb_listener" "pub" {
   load_balancer_arn = data.aws_alb.pub.arn
-  port              = 80
+  port              = var.enable_https ? 443 : 80
 }
 
 data "aws_service_discovery_http_namespace" "ans" {

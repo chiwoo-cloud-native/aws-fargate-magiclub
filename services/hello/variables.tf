@@ -24,3 +24,8 @@ variable "enable_service_connect" {
   type    = bool
   default = false
 }
+
+variable "enable_https" {
+  type    = bool
+  default = false
+}
