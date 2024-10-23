@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DEF_STS_PROFILE="terra"
+DEF_STS_PROFILE="symple-sts"
 DEF_STS_REGION="ap-northeast-2"
 
 set -euo pipefail
@@ -15,8 +15,8 @@ else
 fi
 
 read -p 'Enter the MFA code : ' MFA_CODE
-export PROFILE="terra"
-export MFA_ARN="arn:aws:iam::438916407893:mfa/seonbo.shim@bespinglobal.com"
+export PROFILE="<YOUR-AWS-PROFILE>"
+export MFA_ARN="arn:aws:iam::111122223333:mfa/<YOUR-MFA-SERIAL>"
 
 if [  $# -ge 1 ]
   then

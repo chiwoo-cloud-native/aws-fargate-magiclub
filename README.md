@@ -118,13 +118,13 @@ newgrp docker
 ### AWS CLI 를 통한 사전 구성 서비스 확인 
 ```
 # domain 변수 값에 해당하는 public hosted-zone 이 구성되어 있는지 확인 합니다.  
-aws route53 list-hosted-zones --profile terra
+aws route53 list-hosted-zones --profile symple
 
 # domain 변수 값에 해당하는 ACM 인증서가 발급되어 있는지 확인 합니다.
-aws acm list-certificates --profile terra
+aws acm list-certificates --profile symple
 
 # kms 별칭에 해당하는 사용자 KMS 암호화 키가 구성되어 있는지 확인 합니다.
-aws kms list-aliases --profile terra
+aws kms list-aliases --profile symple
 ```
 
 ### AWSServiceRoleForECS 서비스 연결 역할 
@@ -133,7 +133,7 @@ ECS 클러스터는 내부적으로 서비스 실행 및 리소스 관리를 위
 
 ECS 클러스터를 위한 IAM 서비스 연결 역할은 AWS CLI 를 통해 생성할 수 있습니다. 
 ```
-aws iam create-service-linked-role --aws-service-name ecs.amazonaws.com --profile terra
+aws iam create-service-linked-role --aws-service-name ecs.amazonaws.com --profile symple
 ```
 
 ### 도메인 서비스 가입 참고 
@@ -155,7 +155,7 @@ git clone https://github.com/chiwoo-cloud-native/aws-fargate-magiclub.git
 `aws-fargate-magiclub` 프로젝트 경로에서 `sh deploy.sh` 명령을 통해 AWS 클라우드 리소스 및 ECS Service(애플리케이션)가 한번에 프로비저닝 됩니다.
 
 ```
-export AWS_PROFILE=terra
+export AWS_PROFILE=symple
 
 cd aws-fargate-magiclub
 
